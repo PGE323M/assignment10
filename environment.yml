@@ -62,7 +62,6 @@ dependencies:
 - zlib=1.2.11=0
 - pip:
   - ipython-genutils==0.2.0
-  - ipython-tikzmagic==0.1.0
   - jupyter-client==5.1.0
   - jupyter-core==4.3.0
   - prompt-toolkit==1.0.15
