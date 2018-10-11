@@ -1,5 +1,7 @@
 sudo: false
 language: python
+env:
+  - ASSIGNMENT=assignment10
 install:
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
   - bash miniconda.sh -b -p $HOME/miniconda
@@ -8,9 +10,9 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - conda env create -f environment.yml
-  - source activate assignment10
+  - conda install numpy scipy matplotlib pyyaml nbconvert ipython
+  - "curl -H \"Authorization: token ${GH_TOKEN}\" -H 'Accept: application/vnd.github.v3.raw' -O --location \"https://api.github.com/repos/PGE323M/${ASSIGNMENT}/contents/test.py\""
 before_script:
-  - jupyter nbconvert --to python assignment10.ipynb --output test.py
+  - jupyter nbconvert --to python ${ASSIGNMENT}.ipynb 
 script:
-  - nosetests
+  - python test.py

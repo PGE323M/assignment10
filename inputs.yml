@@ -1,0 +1,25 @@
+'conversion factor': 0.00633
+'fluid': 
+    'water': 
+        'compressibility': 0.000001 #psi^{-1}
+        'viscosity': 1.0 #cp
+'reservoir': 
+    'permeability': 50.0 #mD
+    'porosity': 0.2
+    'length': 10000.0 #ft
+'initial conditions':
+    'pressure': 1000.0 #psi
+'boundary conditions': 
+    'left': 
+        'type': 'prescribed pressure'
+        'value': 2000.0 #psi
+    'right': 
+        'type': 'prescribed flux'
+        'value': 0.0 #ft^3/day
+'numerical': 
+    'solver': 'implicit'
+    'number of grids': 4
+    'time step': 1 #day
+    'number of time steps': 3 
+'plots': 
+    'frequency': 1
