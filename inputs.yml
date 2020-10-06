@@ -18,7 +18,8 @@
         'value': 0.0 #ft^3/day
 'numerical': 
     'solver': 'implicit'
-    'number of grids': 4
+    'number of grids': 
+        'x': 4
     'time step': 1 #day
     'number of time steps': 3 
 'plots': 
