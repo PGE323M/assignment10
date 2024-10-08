@@ -1,7 +1,6 @@
 name: assignment10
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - numpy=2.1.1
   - python=3.11.9
