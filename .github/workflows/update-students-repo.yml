@@ -1,0 +1,55 @@
+name: Publish student template
+
+on:
+  push:
+    branches: [students]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-assignment10-student-template
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'PGE323M/assignment10-solution' && github.ref == 'refs/heads/students'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out sanitized student branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Verify sanitized branch
+        run: |
+          test "$(git rev-list --count HEAD)" -eq 1
+          test "$(git show -s --format=%P HEAD)" = ""
+          test ! -e private_test.py
+          test -e assignment10.py
+          test -e test.py
+          test -e test_submission.py
+          test -e submission-policy.json
+          test -e images/grid.png
+          test -e .github/skills/submit-assignment/SKILL.md
+          test -e .github/skills/submit-assignment/scripts/submit.py
+          test -e README.md
+          test -e AGENTS.md
+          test ! -e environment.yml.bak
+          test -e inputs.yml
+          test -e images/grid.png
+          ! grep --line-number --fixed-strings "TestAssignment10Private" assignment10.py test.py README.md
+
+      - name: Push sanitized tree to public template
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        run: |
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_DEPLOY_KEY" > "$HOME/.ssh/deploy_key"
+          chmod 600 "$HOME/.ssh/deploy_key"
+          ssh-keyscan -H github.com > "$HOME/.ssh/known_hosts"
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/deploy_key -o IdentitiesOnly=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+          git remote set-url origin git@github.com:PGE323M/assignment10.git
+          git branch -M master
+          git push --force origin master
